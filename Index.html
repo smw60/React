@@ -1,0 +1,309 @@
+﻿		
+	<!DOCTYPE html>
+	<html>
+		  <head>
+			<meta charset="UTF-8" />
+			<title>REACT in BSTU </title>
+			
+			<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+			<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+			<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+		   <style>
+		     :root {
+					--height_panel: 750px;
+					--width_left_panel: 20%;
+					--width_right_panel: 79.5%;
+					--min_width_body: 1100px;
+                    }
+             body  { min-width: var(--min_width_body); }
+			.Navigation {
+						 box-sizing: border-box;
+						 border: 2px solid #000000;
+						 padding: 0.1%;
+						 background-color: #cecccc;
+				       }
+			.Navigation .activebutton  { margin: 1%; border: 2px solid #000000; background-color: #cecccc;}
+			.Navigation .passivebutton { margin: 1%; border: 2px solid #cecccc; background-color: #cecccc;}
+			
+			.Panel     {
+						 box-sizing: border-box;
+						 border: 2px solid #000000;
+						 padding: 0.1%;
+						}
+		   .Students, .Companies  {
+						 width: var(--width_left_panel);
+						 height: var(--height_panel);
+						 margin-top: 0.5%;
+						 box-sizing: border-box;
+						 border: 2px solid #000000;
+						 background-color: #e8e4e4;
+						 padding: 0.1%;
+						 float: left;
+						 overflow-y: scroll;
+   					  }
+		  .Students	.operations { display:inline-block; margin:3px; box-sizing: border-box; border: 1px solid #000000;  background-color: #e8e4e4; padding: 1px;}
+		  .Students .addstudent    {display:block;  margin: 3px; padding: 0.5%; border: 2px solid #000000;} 
+		  .Students .addstudent input {width: 98%;}
+		  
+		  .Students .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
+		  .Students .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
+          
+		  /*.Students .addstudent button {} */
+		  
+		  .Companies .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
+		  .Companies .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}	
+ 		  
+		 
+		  .Student_Events, .Company_Events {
+						  box-sizing: border-box;
+						  border: 2px solid #000000;
+						  display: inline-block;
+						  width: var(--width_right_panel);
+						  height: var(--height_panel);
+						  margin-left: 0.5%;
+						  margin-top: 0.5%;
+						  float: none;
+						  padding: 0.5%;
+						  overflow-y: scroll;
+						  overflow-x: scroll;
+						}
+		  .Student_Events .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
+		  .Student_Events .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
+		  .Company_Events .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
+		  .Company_Events .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}	
+			
+		  .Events, .Contacts  {
+						  box-sizing: border-box;
+						  border: 2px solid #000000;
+						  /* display: inline-block;          */
+						  /* width: var(--width_right_panel); */
+						  height: var(--height_panel);
+						  margin-left: 0.5%;
+						  margin-top: 0.5%;
+						  float: none;
+						  padding: 0.5%;
+						  overflow-y: scroll;
+						  overflow-x: scroll;
+					  }
+			
+		  </style>
+		  </head>
+		<body>
+			
+			<div id="root"></div>
+			<script type="text/babel">
+			const Data_Students = [   // отладка 
+						{id:1,	name:'Петров П.П.', 	 spec:'ИСиТ', 	 group:1,	syear:2016}, 
+						{id:2,	name:'Иванов И.И.',		 spec:'ИСиТ',    group:1,	syear:2016}, 
+						{id:3,	name:'Сидоров С.С.',	 spec:'ПОИТ',    group:4,	syear:2016},
+						{id:4,	name:'Кириллов К.К.',	 spec:'ПОИТ',    group:5,	syear:2016},
+						{id:5,	name:'Алексеев А.А.',	 spec:'ДЭВИ',    group:9,	syear:2016},
+						{id:6,	name:'Сергеев С.С.',     spec:'ПОИБМС',  group:7,	syear:2017},
+						{id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+								  ];
+             const Data_Events  = [   // отладка 
+						{id:1,   date:'2019-01-07', text:'Собеседование',
+						company:{id:1,  name: 'iTechArt'}, student:{id:2,	name:'Иванов И.И.',		 spec:'ИСиТ',    group:1,	syear:2016}
+						}, 
+						{id:2,  date:'2018-09-12', text:'Стажировка',
+						company:{id:1,  name: 'iTechArt'}, student:{id:1,	name:'Петров П.П.', 	 spec:'ИСиТ', 	 group:1,	syear:2016}
+						},
+						{id:3,  date:'2018-02-07', text:'Принят на работу',
+						company:{id:2,  name: 'LeverX'}, student:{id:2,  name: 'LeverX'}
+						},
+						{id:4,  date:'2018-04-22', text:'Собеседование не прошел, плохой англ',
+						company: {id:2,  name: 'LeverX'},    student: {id:4,	name:'Кириллов К.К.',	 spec:'ПОИТ',    group:5,	syear:2016}
+						},
+						{id:5,  date:'2018-07-12', text:'Пошел на лаб',
+						company: {id:3,  name: 'iSsoft'},    student:{id:5,	name:'Алексеев А.А.',	 spec:'ДЭВИ',    group:9,	syear:2016}
+						},
+						{id:6,  date:'2018-06-14', text:'Посещает курсы',
+						company:{id:4,  name: 'EPAM'},  student:{id:2,	name:'Иванов И.И.',	spec:'ИСиТ',    group:1,	syear:2016}
+						},
+						{id:7,  date:'2018-04-15', text:'Работает полный день',
+						company:{id:4,  name: 'EPAM'},   student:{id:6,	name:'Сергеев С.С.',     spec:'ПОИБМС',  group:7,	syear:2017}
+						},
+						{id:8,  date:'2017-02-25', text:'Хакатон 1 место',
+						company: null,   student: {id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+						},
+						{id:9,  date:'2017-11-30', text:'Собеседование',
+						company:{id:5,  name: 'IBA'},  student: {id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+						},
+						{id:10, date:'2017-11-30', text:'Собеседование',
+						company: {id:2,  name: 'LeverX'}, student: {id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+						}
+								  ];
+			const Data_Company  = [   // отладка 
+						{id:1,  name: 'iTechArt'}, 
+						{id:2,  name: 'LeverX'},
+						{id:3,  name: 'iSsoft'},
+						{id:4,  name: 'EPAM'},
+						{id:5,  name: 'IBA'},
+						{id:6,  name: 'Wargaing'},
+								  ];
+								  
+			</script>
+			 <script type="text/babel">
+          			
+			 const REGIM = {
+			                S: 'Students',
+           			        C: 'Companies', 
+						    E: 'Events', 
+						    R: 'Contacts'
+						   }; 
+			    		
+			
+			   const Navigation  = (props) => {
+			                              const obc = (e)=>{
+										  		props.changeRegim(REGIM[e.target.id]);
+										  	    [...document.querySelectorAll(".Navigation .activebutton")].map((e)=>{e.className = 'passivebutton'});
+											    document.getElementById(e.target.id).className = 'activebutton';
+										  };
+										  return <nav className='Navigation'>
+				                                    <button id="S" onClick={obc} className ='activebutton' >Студенты</button>
+													<button id="C" onClick={obc} className ='passivebutton'>Компании</button>
+													<button id="E" onClick={obc} className ='passivebutton'> События</button>
+													<button id="R" onClick={obc} className ='passivebutton'> Контакты</button>
+												 </nav>
+			   }; 
+	           
+			  class SpecList extends React.Component{
+			             constructor(props) {
+							super(props);
+							this.ispec = React.createRef();
+				     }
+					  render(){
+							console.log('SpecList', this.ispec.current.value);
+							let tmp = this.props.data.map((item, index)=>{return  <option value={item.name} ref={this.ispec}>{item.name}  </option>});
+							//let rc = <select>{tmp}</select>;
+							//rc.props.set('value', 'xxxx');
+							return <select>{tmp}</select>;
+                     }					 
+			 };
+				    	
+			  
+			   
+			  class AddStudent extends React.Component{
+			         constructor(props) {
+							super(props);
+							this.iname = React.createRef();
+							this.ispec = React.createRef();
+							this.iyear = React.createRef();
+							this.igroup = React.createRef();
+					 }
+					 obc = ()=>{this.props.addadd(this.iname.current.value, this.ispec.current.value, this.iyear.current.value, this.igroup.current.value);}			
+					 render(){
+ 					  return       <table className ="addstudent" >
+								   <thead> 
+								    <tr><th colSpan="2">Новый студент</th></tr>   
+								   </thead>
+								   <tbody>
+                                    <tr><td>Имя</td><td><input type="text" ref={this.iname} /></td></tr> 
+								    <tr><td>Специальность</td><td><SpecList  
+																	data={[ {name:'ИСиТ'}, {name:'ПОИТ'}, {name:'ПОИБМС'}]}  /></td></tr>
+								    <tr><td>Год поступления</td><td><input type="number" ref={this.iyear}/></td></tr>
+								    <tr><td>Группа</td><td><input type="number" ref={this.igroup} /></td></tr>
+								    <tr><th colSpan="2"><button  onClick={this.obc}>Добавить</button><button onClick={this.props.addcancel}>Отказаться</button></th></tr>
+								   </tbody>
+							       </table>;
+					 }
+			   } 
+			  //  <tr><td>Специальность</td><td><input type="text" ref={this.ispec}  /></td></tr>
+			   
+			   class Students extends React.Component {
+			       state = {students:this.props.data, flagadd:false};
+			       obc = (e)=>{ 
+										 [...document.querySelectorAll(".Students .activebutton")].map((e)=>{e.className = 'passivebutton'});
+										 document.getElementById(e.target.id).className = 'activebutton';
+										 this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));
+				  };
+				  addobc     = (e)=>{this.setState({flagadd:true})};
+				  addcancel  = (e)=>{this.setState({flagadd:false})};
+				  addadd     = (name, spec, year, group)=>{
+				                      this.setState({flagadd:false}); console.log('Students', name + ' ' + spec + ' ' + year + ' '+ group);
+									  let newstudent =  {id:Date.now()%(10*365*24*60*60*1000),	name: name,	 spec:spec,    group:group,	syear:year}
+									  this.state.students.unshift(newstudent); 
+				  };
+				  render(){
+				       let flag = this.props.currstudent()!=null;
+					   let mnu =  <div className ="operations" >  
+					              {!this.state.flagadd&&<button id="addstudent" onClick={this.addobc} title="добавить нового студента"><img src="images/icons8-плюс-30.png" alt="добавить нового студента"/></button>} 
+								  {!this.state.flagadd&&flag&&<button id="remstudent"  title="удалить студента"><img src="images/icons8-минус-30.png" alt="удалить студента" /></button>}
+								  {!this.state.flagadd&&flag&&<button id="updstudent"  title="изменить студента"><img src="images/icons8-available-updates-30.png" alt="изменить студента" /></button>}
+								  {!this.state.flagadd&&flag&&<button id="posstudent"  title="позиционировать"> <img src="images/icons8-легко-найти-30.png" alt="позиционировать" /></button>}
+								  </div>								  
+				       let tmp = null;
+					   if (Array.isArray(this.state.students)){
+						   tmp = this.state.students.map((item, index)=><button key = {item.id} id = {item.id}  onClick={this.obc} className='passivebutton'> 
+						                                         {item.id} {item.name}</button>);
+					  }
+					  let addstudent = <AddStudent addadd = {this.addadd}  addcancel= {this.addcancel} />;
+					  return <div className='Students'>{mnu}{this.state.flagadd&&addstudent}{tmp}</div>;
+				   }   
+			   }
+			   
+			  			   
+			   const Student_Events  = (props) => {console.log(props.currstudent);
+			                                   let tmp = null;
+											   let h3 = null; 
+											   if (props.currstudent != null && Array.isArray(props.data)){
+											       const {name, spec, syear, group} = props.currstudent;
+											       h3 = <h3>   {name}, {spec}-{syear}-{group} </h3>; 
+											       tmp = props.data.map((item, index)=>{
+													   if (item.student.id == props.currstudent.id)
+													   {
+													   	  return  <button key = {item.id} id = {item.id}  className='passivebutton'> 
+																		  {item.id} {item.date} {item.company!=null?item.company.name:null} {item.text}</button>;
+													   }
+													});
+											   }
+											   return  <div className='Student_Events'> {h3}{tmp}</div>;
+			   };						 
+			   const Companies       = () => {return  <div className='Companies'><p> Companies</p></div>};
+			   const Company_Events  = () => {return  <div className='Company_Events'><p> Company_Events</p></div>};		
+               const Events          = () => {return  <div className='Events'><p> Events</p></div>};
+			   const Contacts        = () => {return  <div className='Contacts'> <p>Contacts</p></div>};	
+
+			   			   
+			   class Panel  extends React.Component {
+				   state = {currStudent: null, currEvent_id:null};
+				   updCurrStudent  = (student) => {
+ 				                                   if (student)
+												   {
+												      this.setState({currStudent: student})
+												   }; 
+											        return this.state.currStudent;
+											     };
+      		       render(){
+							return  <div className='Panel'>
+										{(this.props.Regim == REGIM.S)&&<Students data={Data_Students} currstudent={this.updCurrStudent} />}
+										{(this.props.Regim == REGIM.S)&&<Student_Events data={Data_Events}  currstudent={this.state.currStudent} />}
+										{(this.props.Regim == REGIM.C)&&<Companies />}
+										{(this.props.Regim == REGIM.C)&&<Company_Events />}
+										{(this.props.Regim == REGIM.E)&&<Events />}
+										{(this.props.Regim == REGIM.R)&&<Contacts />}
+									</div>;
+				 }    
+			   }
+				
+				class App extends React.Component {
+				       state = { Regim: REGIM.S}    // состояние 
+					   changeRegim  = (r) => {this.state.Regim != r?this.setState({Regim: r}):null;}; 
+					   render(){
+					        console.log('App', this.state.Regim);
+							return (
+								   <div> 
+									<p> Компонент App: {this.state.Regim} </p> 
+									 <Navigation changeRegim = {this.changeRegim} />
+									 <Panel Regim = {this.state.Regim} />
+								   </div>
+								  );
+					   }
+				};						 					 
+                ReactDOM.render(<App/>, document.getElementById('root') );
+			 </script>
+
+		</body>
+	</html>
+	
+	
