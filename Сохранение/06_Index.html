@@ -184,20 +184,17 @@
 							this.igroup = React.createRef();
 					 }
 					 getVal = (val)=>{ this.ispec = val;    console.log('AddStudent', val);  };
-				     obc = (e)=>{this.props.addadd(this.iname.current.value, this.ispec, this.iyear.current.value, this.igroup.current.value);};
-					
+				     obc = (e)=>{this.props.addadd(this.iname.current.value, this.ispec, this.iyear.current.value, this.igroup.current.value);};										 			
 					 render(){
-					      let Year = new Date().getFullYear();
  					      return   <table className ="addstudent" >
 								   <thead> 
 								    <tr><th colSpan="2">Новый студент</th></tr>   
 								   </thead>
 								   <tbody>
-                                    <tr><td>Имя</td><td><input type="text" ref={this.iname}  placeholder='Фамилия И.О.'    /></td></tr> 
+                                    <tr><td>Имя</td><td><input type="text" ref={this.iname} /></td></tr> 
 								    <tr><td>Специальность</td><td><SpecList   getVal={this.getVal} data={this.props.dataspec}  /></td></tr>
-								    <tr><td>Год поступления</td>
-									<td><input type="number" ref={this.iyear}  defaultValue={Year} min={Year-10} max={Year}  /></td></tr>
-								    <tr><td>Группа</td><td><input type="number" ref={this.igroup}defaultValue='1' min='1' max='20'  /></td></tr>
+								    <tr><td>Год поступления</td><td><input type="number" ref={this.iyear}/></td></tr>
+								    <tr><td>Группа</td><td><input type="number" ref={this.igroup} /></td></tr>
 								    <tr><th colSpan="2"><button  onClick={this.obc}>Добавить</button><button onClick={this.props.addcancel}>Отказаться</button></th></tr>
 								   </tbody>
 							       </table>;
@@ -208,30 +205,16 @@
 			   class Students extends React.Component {
 			       state = {students:this.props.data, flagadd:false};
 			       obc = (e)=>{ 
-								[...document.querySelectorAll(".Students .activebutton")].map((e)=>{e.className = 'passivebutton'});
-								document.getElementById(e.target.id).className = 'activebutton';
-								this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));
+										 [...document.querySelectorAll(".Students .activebutton")].map((e)=>{e.className = 'passivebutton'});
+										 document.getElementById(e.target.id).className = 'activebutton';
+										 this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));
 				  };
-				  setcurrstudent = (e)=>{ 
-				                console.log('setcurrstudent',e);
-								//[...document.querySelectorAll(".Students .activebutton")].map((e)=>{e.className = 'passivebutton'});
-								// document.getElementById(e.id).className = 'activebutton';
-								//this.props.currstudent( this.state.students.find((em)=> em.id == e.id));
-				  }; 
-				  static getDerivedStateFromProps(props, state) {
-						console.log('getDerivedStateFromProps',props);
-						console.log('getDerivedStateFromProps',state);
-						return state;
-				  }
-				 
 				  addobc     = (e)=>{this.setState({flagadd:true})};
 				  addcancel  = (e)=>{this.setState({flagadd:false})};
 				  addadd     = (name, spec, year, group)=>{
 				                      this.setState({flagadd:false}); console.log('Students', name + ' ' + spec + ' ' + year + ' '+ group);
-									  let newid = Date.now()%(10*365*24*60*60*1000);
-									  let newstudent =  {id: newid,	name: name,	 spec:spec,    group:group,	syear:year};
+									  let newstudent =  {id:Date.now()%(10*365*24*60*60*1000),	name: name,	 spec:spec,    group:group,	syear:year}
 									  this.state.students.unshift(newstudent); 
-									  this.setcurrstudent(document.getElementById(newid));
 				  };
 				  render(){
 				       let flag = this.props.currstudent()!=null;
