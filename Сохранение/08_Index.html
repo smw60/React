@@ -38,24 +38,21 @@
 						 border: 2px solid #000000;
 						 background-color: #e8e4e4;
 						 padding: 0.1%;
-						
 						 float: left;
-						
+						 overflow-y: scroll;
    					  }
-		  .Students	.operations { display:inline-block; /* position:fixed;*/ margin:3px; box-sizing: border-box; border: 1px solid #000000;  background-color: #e8e4e4; padding: 1px;}
-		  .Students .addstudent { display:block;  margin: 3px; padding: 0.5%; border: 2px solid #000000;} 
+		  .Students	.operations { display:inline-block; margin:3px; box-sizing: border-box; border: 1px solid #000000;  background-color: #e8e4e4; padding: 1px;}
+		  .Students .addstudent    {display:block;  margin: 3px; padding: 0.5%; border: 2px solid #000000;} 
 		  .Students .addstudent input {width: 98%;}
+		  
 		  .Students .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
 		  .Students .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
-		  .Students .students_list {  overflow-y: scroll;  height: calc(var(--height_panel) - 70px);}
-		 
-
-
-
-		 /*.Students .addstudent button {} */
+          
+		  /*.Students .addstudent button {} */
 		  
 		  .Companies .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
 		  .Companies .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}	
+ 		  
 		 
 		  .Student_Events, .Company_Events {
 						  box-sizing: border-box;
@@ -102,23 +99,7 @@
 						{id:4,	name:'Кириллов К.К.',	 spec:'ПОИТ',    group:5,	syear:2016},
 						{id:5,	name:'Алексеев А.А.',	 spec:'ДЭВИ',    group:9,	syear:2016},
 						{id:6,	name:'Сергеев С.С.',     spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:8,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:9,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:10,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:11,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:12,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:13,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:14,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:15,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:16,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:17,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:18,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:19,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:20,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:21,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:22,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017},
-						{id:23,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+						{id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
 								  ];
              const Data_Events  = [   // отладка 
 						{id:1,   date:'2019-01-07', text:'Собеседование',
@@ -158,10 +139,10 @@
 						{id:3,  name: 'iSsoft'},
 						{id:4,  name: 'EPAM'},
 						{id:5,  name: 'IBA'},
-						{id:6,  name: 'Wargaming'},
+						{id:6,  name: 'Wargaing'},
 								  ];
 								  
-			const Data_Speciality = [{name:'ИСиТ'}, {name:'ПОИТ'}, {name:'ПОИБМС'}, {name:'ДЭВИ'}];
+			const Data_Speciality = [{name:'ИСиТ'}, {name:'ПОИТ'}, {name:'ПОИБМС'}];
 								  
 			</script>
 			 <script type="text/babel">
@@ -192,21 +173,22 @@
 							props.getVal(props.data[0].name);
 					        let onSpecChange =(e)=>{props.getVal(e.currentTarget.value);};
 					        let tmp = props.data.map((item, index)=>{return <option key={item.name} value={item.name}>{item.name}</option>});
-							return <select onChange={onSpecChange} defaultValue={props.defaultvalue}  >{tmp}</select>;
+							return <select onChange={onSpecChange} >{tmp}</select>;
               };					  
 				
 			  class AddStudent extends React.Component{
 			         constructor(props) {
 							super(props);
 							this.iname = null;
-						    this.ispec = null;    
+						    this.ispec = null;    //      props.dataspec[0].name;
 							this.iyear = React.createRef();
 							this.igroup = React.createRef();
 							this.state = {validate:false};
 					 }
-					 getVal = (val)=>{this.ispec = val;};
+					 getVal = (val)=>{ this.ispec = val;    console.log('AddStudent', val);  };
 				     obc = (e)=>{this.props.addadd(this.iname, this.ispec, this.iyear.current.value, this.igroup.current.value);};
 					 nameChange = (e)=>{this.iname = e.currentTarget.value;  
+										console.log('nameChange',this.iname);
 										let v = this.iname && this.iname.trim();
 									    if (this.state.validate != v) {this.setState({validate:v});};
 					 };
@@ -214,11 +196,11 @@
 					      let Year = new Date().getFullYear();
  					      return   <table className ="addstudent" >
 								   <thead> 
-								    <tr><th colSpan="2">Новый </th></tr>   
+								    <tr><th colSpan="2">Новый студент</th></tr>   
 								   </thead>
 								   <tbody>
-                                    <tr><td>Имя</td><td><input type="text" onChange={this.nameChange}  placeholder='Фамилия И.О.' /></td></tr> 
-								    <tr><td>Специальность</td><td><SpecList  getVal={this.getVal} data={this.props.dataspec} defaultvalue={null}    /></td></tr>
+                                    <tr><td>Имя</td><td><input type="text" onChange={this.nameChange}  placeholder='Фамилия И.О.'    /></td></tr> 
+								    <tr><td>Специальность</td><td><SpecList   getVal={this.getVal} data={this.props.dataspec}  /></td></tr>
 								    <tr><td>Год поступления</td>
 									<td><input type="number" ref={this.iyear}  defaultValue={Year} min={Year-10} max={Year}  /></td></tr>
 								    <tr><td>Группа</td><td><input type="number" ref={this.igroup}defaultValue='1' min='1' max='20'  /></td></tr>
@@ -227,45 +209,10 @@
 								   </tbody>
 							       </table>;
 					 }
-			  } 
-			  class UpdStudent extends React.Component{
-			         constructor(props) {
-							super(props);
-							this.iid = null;
-							this.iname = null;
-						    this.ispec = null;    
-							this.iyear = React.createRef();
-							this.igroup = React.createRef();
-							this.state = {validate:true};
-					 }
-					  getVal = (val)=>{this.ispec = val;};
-					  nameChange = (e)=>{this.iname = e.currentTarget.value;  
-										let v = this.iname && this.iname.trim();
-									    if (this.state.validate != v) {this.setState({validate:v});}
-					  };
-					  render(){
-					       let Year = new Date().getFullYear();
-					       const {id, name, spec, syear, group } = this.props.currstudent();
-					       return   <table className ="addstudent" >
-								   <thead> 
-								    <tr><th colSpan="2">Изменить ({id})</th></tr>   
-								   </thead>
-								   <tbody>
-                                    <tr><td>Имя</td><td><input type="text" onChange={this.nameChange}  defaultValue={name} /></td></tr> 
-								    <tr><td>Специальность</td><td><SpecList  getVal={this.getVal} data={this.props.dataspec} defaultvalue={spec} /></td></tr>
-								    <tr><td>Год поступления</td>
-									<td><input type="number" ref={this.iyear}  defaultValue={syear} min={Year-10} max={Year}  /></td></tr>
-								    <tr><td>Группа</td><td><input type="number" ref={this.igroup} defaultValue={group} min='1' max='20'  /></td></tr>
-								    <tr><th colSpan="2"><button  onClick={this.props.updupd} disabled ={!this.state.validate}>Изменить</button>
-														<button onClick={this.props.updcancel}>Отказаться</button></th></tr>
-								   </tbody>
-							       </table>;
-					  }
-			   }
-			  
+			   } 
 	//---------- S T U D E N T S -----------------------------------------------------------------------			   
 			   class Students extends React.Component {
-			       state = {students:this.props.data, flagadd:false, flagupd:false};
+			       state = {students:this.props.data, flagadd:false};
 			       obc = (e)=>{ this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));};
 				 
 				  //static getDerivedStateFromProps(props, state) {
@@ -283,35 +230,22 @@
 									  this.state.students.unshift(newstudent); 
 									  this.props.currstudent( newstudent);
 				  };
-				  updobc     = (e)=>{this.setState({flagupd:true})};
-				  updcancel  = (e)=>{this.setState({flagupd:false})};
-				  updupd  = (e)=>{this.setState({flagupd:false})};
 				  render(){
 				       let flag = this.props.currstudent()!=null;
-					   let flagx = this.state.flagadd||this.state.flagupd;
 					   let ops =  <div className ="operations" >  
-					              {!flagx&&<button id="addstudent" onClick={this.addobc} title="добавить нового студента"><img src="images/icons8-плюс-30.png" alt="добавить нового студента"/></button>} 
-								  {!flagx&&flag&&<button id="remstudent"  title="удалить студента"><img src="images/icons8-минус-30.png" alt="удалить студента" /></button>}
-								  {!flagx&&flag&&<button id="updstudent" onClick={this.updobc}  title="изменить студента"><img src="images/icons8-available-updates-30.png" alt="изменить студента" /></button>}
-								  {!flagx&&flag&&<button id="posstudent"  title="позиционировать"> <img src="images/icons8-легко-найти-30.png" alt="позиционировать" /></button>}
+					              {!this.state.flagadd&&<button id="addstudent" onClick={this.addobc} title="добавить нового студента"><img src="images/icons8-плюс-30.png" alt="добавить нового студента"/></button>} 
+								  {!this.state.flagadd&&flag&&<button id="remstudent"  title="удалить студента"><img src="images/icons8-минус-30.png" alt="удалить студента" /></button>}
+								  {!this.state.flagadd&&flag&&<button id="updstudent"  title="изменить студента"><img src="images/icons8-available-updates-30.png" alt="изменить студента" /></button>}
+								  {!this.state.flagadd&&flag&&<button id="posstudent"  title="позиционировать"> <img src="images/icons8-легко-найти-30.png" alt="позиционировать" /></button>}
 								  </div>								  
 				       let tmp = null;
 					  
 					   if (Array.isArray(this.state.students)){
 						   tmp = this.state.students.map((item, index)=><button key = {item.id} id = {item.id}  onClick={this.obc} className='passivebutton'> 
-																			{item.id} {item.name}
-																		 </button>);
+						                                         {item.id} {item.name}</button>);
 					  }
 					  let addstudent = <AddStudent addadd = {this.addadd}  addcancel= {this.addcancel} dataspec={this.props.dataspec} />;
-					  let updstudent = <UpdStudent currstudent={this.props.currstudent} updupd = {this.updupd}   updcancel= {this.updcancel} dataspec={this.props.dataspec} />
-					  return <div className='Students'>
-								{ops}
-								<div className='students_list'>
-							  	  {this.state.flagadd&&addstudent}
-								  {this.state.flagupd&&updstudent}
-					              {tmp}
-								 </div>
-						     </div>;
+					  return <div className='Students'>{ops}{this.state.flagadd&&addstudent}{tmp}</div>;
 				   }   
 			   }
 	//---------- S T U D E N T __ E V E N T S -----------------------------------------------------------------------			   			  			   
@@ -329,7 +263,7 @@
 													   }
 													});
 											   }
-											   return  <div className='Student_Events'> {h3}{<hr/>}{tmp}</div>;
+											   return  <div className='Student_Events'> {h3}{tmp}</div>;
 			   };						 
 			   const Companies       = () => {return  <div className='Companies'><p> Companies</p></div>};
 			   const Company_Events  = () => {return  <div className='Company_Events'><p> Company_Events</p></div>};		
