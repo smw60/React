@@ -231,9 +231,9 @@
 			  class UpdStudent extends React.Component{
 			         constructor(props) {
 							super(props);
-							this.iid = null;
-							this.iname = null;
-						    this.ispec = null;    
+							this.iid = this.props.currstudent().id;
+							this.iname = this.props.currstudent().name;
+						    this.ispec = this.props.currstudent().spec;    
 							this.iyear = React.createRef();
 							this.igroup = React.createRef();
 							this.state = {validate:true};
@@ -243,6 +243,9 @@
 										let v = this.iname && this.iname.trim();
 									    if (this.state.validate != v) {this.setState({validate:v});}
 					  };
+					  obc = (e)=>{
+									this.props.updupd(this.iid, this.iname, this.ispec, this.iyear.current.value, this.igroup.current.value);
+					  };
 					  render(){
 					       let Year = new Date().getFullYear();
 					       const {id, name, spec, syear, group } = this.props.currstudent();
@@ -251,22 +254,52 @@
 								    <tr><th colSpan="2">Изменить ({id})</th></tr>   
 								   </thead>
 								   <tbody>
-                                    <tr><td>Имя</td><td><input type="text" onChange={this.nameChange}  defaultValue={name} /></td></tr> 
+                                    <tr><td>Имя</td><td><input type="text" onChange={this.nameChange}  defaultValue={name}  /></td></tr> 
 								    <tr><td>Специальность</td><td><SpecList  getVal={this.getVal} data={this.props.dataspec} defaultvalue={spec} /></td></tr>
 								    <tr><td>Год поступления</td>
 									<td><input type="number" ref={this.iyear}  defaultValue={syear} min={Year-10} max={Year}  /></td></tr>
 								    <tr><td>Группа</td><td><input type="number" ref={this.igroup} defaultValue={group} min='1' max='20'  /></td></tr>
-								    <tr><th colSpan="2"><button  onClick={this.props.updupd} disabled ={!this.state.validate}>Изменить</button>
+								    <tr><th colSpan="2"><button  onClick={this.obc} disabled ={!this.state.validate}>Изменить</button>
 														<button onClick={this.props.updcancel}>Отказаться</button></th></tr>
 								   </tbody>
 							       </table>;
 					  }
 			   }
+			   class DelStudent extends React.Component{
+					constructor(props) {
+							super(props);
+							this.iid = this.props.currstudent().id;
+					}
+					render(){
+							const {id, name, spec, syear, group } = this.props.currstudent();
+							return 	<table className ="addstudent" >
+									<thead> 
+								    <tr><th colSpan="2">Удалить ({id})</th></tr>   
+									</thead>
+									 <tbody>
+									 <tr><td colSpan="2">{name}, {spec}-{syear}-{group}	</td></tr>
+									 <tr><th colSpan="2"> 
+									  <button>Удалить</button>
+									  <button onClick={this.props.delcancel}>Отказаться</button>
+									  </th></tr>
+									</tbody>
+									</table>;
+					}
+			   }
+			   
+			   
+			   
+			   
 			  
 	//---------- S T U D E N T S -----------------------------------------------------------------------			   
 			   class Students extends React.Component {
-			       state = {students:this.props.data, flagadd:false, flagupd:false};
-			       obc = (e)=>{ this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));};
+			       state = {students:this.props.data, flagadd:false, flagupd:false, flagdel:false};
+				   flagx =()=>{return this.state.flagadd||this.state.flagupd||this.state.flagdel;};
+			       obc = (e)=>{  
+								if(!this.flagx()){
+									this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));
+								}		
+				   };
 				 
 				  //static getDerivedStateFromProps(props, state) {
 				  //		console.log('getDerivedStateFromProps',props);
@@ -277,7 +310,7 @@
 				  addobc     = (e)=>{this.setState({flagadd:true})};
 				  addcancel  = (e)=>{this.setState({flagadd:false})};
 				  addadd     = (name, spec, year, group)=>{
-				                      this.setState({flagadd:false}); console.log('Students', name + ' ' + spec + ' ' + year + ' '+ group);
+				                      this.setState({flagadd:false}); 
 									  let newid = Date.now()%(10*365*24*60*60*1000);
 									  let newstudent =  {id: newid,	name: name,	 spec:spec,    group:group,	syear:year};
 									  this.state.students.unshift(newstudent); 
@@ -285,15 +318,25 @@
 				  };
 				  updobc     = (e)=>{this.setState({flagupd:true})};
 				  updcancel  = (e)=>{this.setState({flagupd:false})};
-				  updupd  = (e)=>{this.setState({flagupd:false})};
+				  updupd  = (id, name, spec, syear, group)=>{
+									  console.log('Students', id);
+									  let ntx = this.state.students.findIndex((em)=> em.id == id);
+									  console.log('Students', ntx);
+									  if (ntx >= 0){ 
+											this.props.currstudent(this.state.students[ntx] = {id:id, name:name, spec:spec, syear:syear, group:group});
+									  };
+									  this.setState({flagupd:false}); 		  			  
+				  };
+				  delobc     = (e)=>{console.log('delobc'); this.setState({flagdel:true})};
+				  delcancel  = (e)=>{this.setState({flagdel:false})};	
 				  render(){
 				       let flag = this.props.currstudent()!=null;
-					   let flagx = this.state.flagadd||this.state.flagupd;
+					  // let flagx = this.state.flagadd||this.state.flagupd||this.state.flagdel;
 					   let ops =  <div className ="operations" >  
-					              {!flagx&&<button id="addstudent" onClick={this.addobc} title="добавить нового студента"><img src="images/icons8-плюс-30.png" alt="добавить нового студента"/></button>} 
-								  {!flagx&&flag&&<button id="remstudent"  title="удалить студента"><img src="images/icons8-минус-30.png" alt="удалить студента" /></button>}
-								  {!flagx&&flag&&<button id="updstudent" onClick={this.updobc}  title="изменить студента"><img src="images/icons8-available-updates-30.png" alt="изменить студента" /></button>}
-								  {!flagx&&flag&&<button id="posstudent"  title="позиционировать"> <img src="images/icons8-легко-найти-30.png" alt="позиционировать" /></button>}
+					              {!this.flagx()&&<button id="addstudent" onClick={this.addobc} title="добавить нового студента"><img src="images/icons8-плюс-30.png" alt="добавить нового студента"/></button>} 
+								  {!this.flagx()&&flag&&<button id="delstudent" onClick={this.delobc}  title="удалить студента"><img src="images/icons8-минус-30.png" alt="удалить студента" /></button>}
+								  {!this.flagx()&&flag&&<button id="updstudent" onClick={this.updobc}  title="изменить студента"><img src="images/icons8-available-updates-30.png" alt="изменить студента" /></button>}
+								  {!this.flagx()&&flag&&<button id="posstudent"  title="позиционировать"> <img src="images/icons8-легко-найти-30.png" alt="позиционировать" /></button>}
 								  </div>								  
 				       let tmp = null;
 					  
@@ -304,17 +347,20 @@
 					  }
 					  let addstudent = <AddStudent addadd = {this.addadd}  addcancel= {this.addcancel} dataspec={this.props.dataspec} />;
 					  let updstudent = <UpdStudent currstudent={this.props.currstudent} updupd = {this.updupd}   updcancel= {this.updcancel} dataspec={this.props.dataspec} />
+					  let delstudent = <DelStudent currstudent={this.props.currstudent} delcancel= {this.delcancel} />;
 					  return <div className='Students'>
 								{ops}
 								<div className='students_list'>
 							  	  {this.state.flagadd&&addstudent}
 								  {this.state.flagupd&&updstudent}
+								  {this.state.flagdel&&delstudent}
 					              {tmp}
 								 </div>
 						     </div>;
 				   }   
 			   }
-	//---------- S T U D E N T __ E V E N T S -----------------------------------------------------------------------			   			  			   
+	//---------- S T U D E N T __ E V E N T S -----------------------------------------------------------------------	
+	
 			   const Student_Events  = (props) => {console.log(props.currstudent);
 			                                   let tmp = null;
 											   let h3 = null; 
@@ -330,7 +376,8 @@
 													});
 											   }
 											   return  <div className='Student_Events'> {h3}{<hr/>}{tmp}</div>;
-			   };						 
+			   };	
+            			   
 			   const Companies       = () => {return  <div className='Companies'><p> Companies</p></div>};
 			   const Company_Events  = () => {return  <div className='Company_Events'><p> Company_Events</p></div>};		
                const Events          = () => {return  <div className='Events'><p> Events</p></div>};
