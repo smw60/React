@@ -1,6 +1,6 @@
 ﻿		
 	<!DOCTYPE html>
-	<html>
+	<html*/
 		  <head>
 			<meta charset="UTF-8" />
 			<title>REACT in BSTU </title>
@@ -10,7 +10,8 @@
 			<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 		   <style>
 		     :root {
-					--height_panel: 750px;
+					 /* --height_panel: 750px */
+					--height_panel: 600px;
 					--width_left_panel: 25%;
 					--width_right_panel: 74.5%;
 					--min_width_body: 1100px;
@@ -44,7 +45,10 @@
    					  }
 		  .Students	.operations { display:inline-block; /* position:fixed;*/ margin:3px; box-sizing: border-box; border: 1px solid #000000;  background-color: #e8e4e4; padding: 1px;}
 		  .Students .addstudent { display:block;  margin: 3px; padding: 0.5%; border: 2px solid #000000;} 
-		  .Students .addstudent input {width: 98%;}
+		  .Students .addstudent input {width: 98}
+		  .Students .opstudent { display:block;  margin: 3px; padding: 0.5%; border: 2px solid #000000;} 
+		  .Students .opstudent input {width: 98%;}
+		  .Students .opstudent button {margin: 5px;}
 		  .Students .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
 		  .Students .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
 		  .Students .students_list {  overflow-y: scroll;  height: calc(var(--height_panel) - 70px);}
@@ -194,7 +198,7 @@
 					        let tmp = props.data.map((item, index)=>{return <option key={item.name} value={item.name}>{item.name}</option>});
 							return <select onChange={onSpecChange} defaultValue={props.defaultvalue}  >{tmp}</select>;
               };					  
-				
+	//------ A D D __S T U D E N T S-----------------------------------------------------------------------	
 			  class AddStudent extends React.Component{
 			         constructor(props) {
 							super(props);
@@ -212,7 +216,7 @@
 					 };
 					 render(){
 					      let Year = new Date().getFullYear();
- 					      return   <table className ="addstudent" >
+ 					      return   <table className ="opstudent" >
 								   <thead> 
 								    <tr><th colSpan="2">Новый </th></tr>   
 								   </thead>
@@ -228,6 +232,7 @@
 							       </table>;
 					 }
 			  } 
+	//------ U P D __S T U D E N T  -----------------------------------------------------------------------
 			  class UpdStudent extends React.Component{
 			         constructor(props) {
 							super(props);
@@ -249,7 +254,7 @@
 					  render(){
 					       let Year = new Date().getFullYear();
 					       const {id, name, spec, syear, group } = this.props.currstudent();
-					       return   <table className ="addstudent" >
+					       return   <table className ="opstudent" >
 								   <thead> 
 								    <tr><th colSpan="2">Изменить ({id})</th></tr>   
 								   </thead>
@@ -265,36 +270,36 @@
 							       </table>;
 					  }
 			   }
+	//------- D E L __S T U D E N T  -----------------------------------------------------------------------
 			   class DelStudent extends React.Component{
 					constructor(props) {
 							super(props);
 							this.iid = this.props.currstudent().id;
+							this.eventDelStudent = this.props.eventDelStudent;
+							
 					}
+					obc = (e)=>{console.log('del_student', this.iid); this.props.deldel(this.iid );};
 					render(){
 							const {id, name, spec, syear, group } = this.props.currstudent();
-							return 	<table className ="addstudent" >
+							return 	<table className ="opstudent" >
 									<thead> 
 								    <tr><th colSpan="2">Удалить ({id})</th></tr>   
 									</thead>
 									 <tbody>
 									 <tr><td colSpan="2">{name}, {spec}-{syear}-{group}	</td></tr>
 									 <tr><th colSpan="2"> 
-									  <button>Удалить</button>
+									  <button onClick={this.obc}>Удалить</button>
 									  <button onClick={this.props.delcancel}>Отказаться</button>
 									  </th></tr>
 									</tbody>
 									</table>;
 					}
-			   }
-			   
-			   
-			   
-			   
-			  
+			   }   
 	//---------- S T U D E N T S -----------------------------------------------------------------------			   
 			   class Students extends React.Component {
 			       state = {students:this.props.data, flagadd:false, flagupd:false, flagdel:false};
 				   flagx =()=>{return this.state.flagadd||this.state.flagupd||this.state.flagdel;};
+				   eventDelStudent = this.props.eventDelStudent;	
 			       obc = (e)=>{  
 								if(!this.flagx()){
 									this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));
@@ -314,7 +319,7 @@
 									  let newid = Date.now()%(10*365*24*60*60*1000);
 									  let newstudent =  {id: newid,	name: name,	 spec:spec,    group:group,	syear:year};
 									  this.state.students.unshift(newstudent); 
-									  this.props.currstudent( newstudent);
+									  this.props.currstudent(newstudent);
 				  };
 				  updobc     = (e)=>{this.setState({flagupd:true})};
 				  updcancel  = (e)=>{this.setState({flagupd:false})};
@@ -327,11 +332,14 @@
 									  };
 									  this.setState({flagupd:false}); 		  			  
 				  };
-				  delobc     = (e)=>{console.log('delobc'); this.setState({flagdel:true})};
-				  delcancel  = (e)=>{this.setState({flagdel:false})};	
+				  delobc     = (e)=>{ this.setState({flagdel:true})};
+				  delcancel  = (e)=>{this.setState({flagdel:false})};
+				  deldel	 = (id)=>{console.log('Students', id);  
+									this.setState({flagdel:false});
+									dispatchEvent(this.eventDelStudent);									
+				  };
 				  render(){
-				       let flag = this.props.currstudent()!=null;
-					  // let flagx = this.state.flagadd||this.state.flagupd||this.state.flagdel;
+				       let flag = this.props.currstudent()!=null;  
 					   let ops =  <div className ="operations" >  
 					              {!this.flagx()&&<button id="addstudent" onClick={this.addobc} title="добавить нового студента"><img src="images/icons8-плюс-30.png" alt="добавить нового студента"/></button>} 
 								  {!this.flagx()&&flag&&<button id="delstudent" onClick={this.delobc}  title="удалить студента"><img src="images/icons8-минус-30.png" alt="удалить студента" /></button>}
@@ -339,7 +347,6 @@
 								  {!this.flagx()&&flag&&<button id="posstudent"  title="позиционировать"> <img src="images/icons8-легко-найти-30.png" alt="позиционировать" /></button>}
 								  </div>								  
 				       let tmp = null;
-					  
 					   if (Array.isArray(this.state.students)){
 						   tmp = this.state.students.map((item, index)=><button key = {item.id} id = {item.id}  onClick={this.obc} className='passivebutton'> 
 																			{item.id} {item.name}
@@ -347,13 +354,13 @@
 					  }
 					  let addstudent = <AddStudent addadd = {this.addadd}  addcancel= {this.addcancel} dataspec={this.props.dataspec} />;
 					  let updstudent = <UpdStudent currstudent={this.props.currstudent} updupd = {this.updupd}   updcancel= {this.updcancel} dataspec={this.props.dataspec} />
-					  let delstudent = <DelStudent currstudent={this.props.currstudent} delcancel= {this.delcancel} />;
+					  let delstudent = <DelStudent currstudent={this.props.currstudent} deldel={this.deldel} delcancel= {this.delcancel} />;
 					  return <div className='Students'>
 								{ops}
+								{this.state.flagdel&&delstudent}
+								{this.state.flagadd&&addstudent}
+								{this.state.flagupd&&updstudent}
 								<div className='students_list'>
-							  	  {this.state.flagadd&&addstudent}
-								  {this.state.flagupd&&updstudent}
-								  {this.state.flagdel&&delstudent}
 					              {tmp}
 								 </div>
 						     </div>;
@@ -361,7 +368,7 @@
 			   }
 	//---------- S T U D E N T __ E V E N T S -----------------------------------------------------------------------	
 	
-			   const Student_Events  = (props) => {console.log(props.currstudent);
+			   const XStudent_Events  = (props) => {console.log(props.currstudent);
 			                                   let tmp = null;
 											   let h3 = null; 
 											   if (props.currstudent != null && Array.isArray(props.data)){
@@ -376,8 +383,31 @@
 													});
 											   }
 											   return  <div className='Student_Events'> {h3}{<hr/>}{tmp}</div>;
-			   };	
-            			   
+			   };
+			class Student_Events extends React.Component {
+				constructor(props) {
+					super(props);
+					addEventListener('eventDelStudent', function (e) {console.log('listener handler', e) }, false);
+					
+				}
+				render(){console.log(this.props.currstudent);
+				    let tmp = null;
+				    let h3 = null; 
+				    if (this.props.currstudent != null && Array.isArray(this.props.data)){
+					   const {name, spec, syear, group} = this.props.currstudent;
+					   h3 = <h3>   {name}, {spec}-{syear}-{group} </h3>; 
+					   tmp = this.props.data.map((item, index)=>{
+						   if (item.student.id == this.props.currstudent.id)
+						   {
+							  return  <button key = {item.id} id = {item.id}  className='passivebutton'> 
+											  {item.id} {item.date} {item.company!=null?item.company.name:null} {item.text}</button>;
+						   }
+						});
+				    }
+				    return  <div className='Student_Events'> {h3}{<hr/>}{tmp}</div>;
+				}
+			}
+	//-----------------------------------------------------------------------------------------------------------------------           			   
 			   const Companies       = () => {return  <div className='Companies'><p> Companies</p></div>};
 			   const Company_Events  = () => {return  <div className='Company_Events'><p> Company_Events</p></div>};		
                const Events          = () => {return  <div className='Events'><p> Events</p></div>};
@@ -386,6 +416,7 @@
 	//---------- P A N E L -----------------------------------------------------------------------		   			   
 			   class Panel  extends React.Component {
 				   state = {currStudent: null, currEvent_id:null};
+				   eventDelStudent = new Event('eventDelStudent');
 				   updCurrStudent  = (student) => {
  				                                   if (student)
 												   {
@@ -400,7 +431,7 @@
 											     };
       		       render(){
 							return  <div className='Panel'>
-										{(this.props.Regim == REGIM.S)&&<Students data={Data_Students} dataspec={Data_Speciality} currstudent={this.updCurrStudent} />}
+										{(this.props.Regim == REGIM.S)&&<Students data={Data_Students} eventDelStudent={this.eventDelStudent} dataspec={Data_Speciality} currstudent={this.updCurrStudent} />}
 										{(this.props.Regim == REGIM.S)&&<Student_Events data={Data_Events}  currstudent={this.state.currStudent} />}
 										{(this.props.Regim == REGIM.C)&&<Companies />}
 										{(this.props.Regim == REGIM.C)&&<Company_Events />}
