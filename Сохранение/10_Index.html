@@ -298,14 +298,20 @@
 	//---------- S T U D E N T S -----------------------------------------------------------------------			   
 			   class Students extends React.Component {
 			       state = {students:this.props.data, flagadd:false, flagupd:false, flagdel:false};
-				   flagx =()=>{return this.state.flagadd||this.state.flagupd||this.state.flagdel;};	
-				   eventStudents  = new CustomEvent('Students', {detail:{ops:null}});
+				   flagx =()=>{return this.state.flagadd||this.state.flagupd||this.state.flagdel;};
+				   eventDelStudent = this.props.eventDelStudent;	
 			       obc = (e)=>{  
 								if(!this.flagx()){
 									this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));
 								}		
 				   };
-				 	 
+				 
+				  //static getDerivedStateFromProps(props, state) {
+				  //		console.log('getDerivedStateFromProps',props);
+				  //		console.log('getDerivedStateFromProps',state);
+				  //	return state;
+				  // }
+				 
 				  addobc     = (e)=>{this.setState({flagadd:true})};
 				  addcancel  = (e)=>{this.setState({flagadd:false})};
 				  addadd     = (name, spec, year, group)=>{
@@ -328,10 +334,9 @@
 				  };
 				  delobc     = (e)=>{ this.setState({flagdel:true})};
 				  delcancel  = (e)=>{this.setState({flagdel:false})};
-				  deldel	 = (id)=>{	
-										this.eventStudents.detail.ops='del';
-										dispatchEvent(this.eventStudents);	
-										this.setState({flagdel:false});
+				  deldel	 = (id)=>{console.log('Students', id);  
+									this.setState({flagdel:false});
+									dispatchEvent(this.eventDelStudent);									
 				  };
 				  render(){
 				       let flag = this.props.currstudent()!=null;  
@@ -362,14 +367,28 @@
 				   }   
 			   }
 	//---------- S T U D E N T __ E V E N T S -----------------------------------------------------------------------	
+	
+			   const XStudent_Events  = (props) => {console.log(props.currstudent);
+			                                   let tmp = null;
+											   let h3 = null; 
+											   if (props.currstudent != null && Array.isArray(props.data)){
+											       const {name, spec, syear, group} = props.currstudent;
+											       h3 = <h3>   {name}, {spec}-{syear}-{group} </h3>; 
+											       tmp = props.data.map((item, index)=>{
+													   if (item.student.id == props.currstudent.id)
+													   {
+													   	  return  <button key = {item.id} id = {item.id}  className='passivebutton'> 
+																		  {item.id} {item.date} {item.company!=null?item.company.name:null} {item.text}</button>;
+													   }
+													});
+											   }
+											   return  <div className='Student_Events'> {h3}{<hr/>}{tmp}</div>;
+			   };
 			class Student_Events extends React.Component {
 				constructor(props) {
 					super(props);
-					addEventListener('Students', (ev)=> {console.log('listener handler', ev);
-								this.props.data
-								.filter(e=>e.student.id == this.props.currstudent.id)
-								.forEach((e)=>e.student.id=null);		
-												}, false);
+					addEventListener('eventDelStudent',  (e)=> {console.log('listener handler', e) }, false);
+					
 				}
 				render(){console.log(this.props.currstudent);
 				    let tmp = null;
@@ -396,31 +415,23 @@
 
 	//---------- P A N E L -----------------------------------------------------------------------		   			   
 			   class Panel  extends React.Component {
-					constructor(props) {
-						super(props);  
-						this.state = {currStudent: null, currEvent_id:null};
-						this.updCurrStudent  = (student) => {
- 				                                   if (student){
+				   state = {currStudent: null, currEvent_id:null};
+				   eventDelStudent = new Event('eventDelStudent');
+				   updCurrStudent  = (student) => {
+ 				                                   if (student)
+												   {
 												      this.setState({currStudent: student}, ()=>{
+																	console.log('setState-callback',this.state);
 																	[...document.querySelectorAll(".Students .activebutton")].map((e)=>{e.className = 'passivebutton'});
-																	let nae = document.getElementById(this.state.currStudent.id);
-																	if (nae!=null) {nae.className = 'activebutton';};
-																	});
+																	document.getElementById(this.state.currStudent.id).className = 'activebutton';
+																	})
 																	
 												   }; 
 											        return this.state.currStudent;
-						};
-						
-						addEventListener('Students', (ev)=> {
-											console.log('panel_listener handler', ev);
-											//this.setState({currStudent: null});
-											this.updCurrStudent(-1);
-						},false);
-					}
-					
+											     };
       		       render(){
 							return  <div className='Panel'>
-										{(this.props.Regim == REGIM.S)&&<Students data={Data_Students}  dataspec={Data_Speciality} currstudent={this.updCurrStudent} />}
+										{(this.props.Regim == REGIM.S)&&<Students data={Data_Students} eventDelStudent={this.eventDelStudent} dataspec={Data_Speciality} currstudent={this.updCurrStudent} />}
 										{(this.props.Regim == REGIM.S)&&<Student_Events data={Data_Events}  currstudent={this.state.currStudent} />}
 										{(this.props.Regim == REGIM.C)&&<Companies />}
 										{(this.props.Regim == REGIM.C)&&<Company_Events />}
