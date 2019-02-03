@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>РДWП-Лабораторная 01</title>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	<link rel="stylesheet" href="01_css.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    
+	 <script type="text/babel">
+	 
+	   var InName = ()=>{
+						   let onchange = (e)=>{
+						      console.log(e.currentTarget.value) 
+					       }; 
+	                       return  <div>
+										<label>Фамилия, имя, отчество </label> 
+										<input type='text' onChange={onchange} />
+	                              </div>;	
+       };							   
+       ReactDOM.render(
+	    <div>
+        <h2>Студент</h2>
+		<InName />
+		</div>,
+        document.getElementById('root')
+      );
+    </script>
+
+  </body>
+</html>
+
