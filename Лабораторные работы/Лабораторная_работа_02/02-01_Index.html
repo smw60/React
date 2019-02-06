@@ -1,0 +1,86 @@
+﻿	
+	<!DOCTYPE html>
+	<html>
+	  <head>
+		<meta charset="UTF-8" />
+		<title>РДWП-Лабораторная 02</title>
+		<script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
+		<script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
+		<script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	  </head>
+	<body>
+	<div id="root"></div>
+		
+	<script type="text/babel">
+		
+	class InStudentsForm  extends  React.Component {
+			constructor(props){
+				super(props);
+				this.state = {name:'',  gender:'М', speciality:props.Specialities[0], languages:[]};
+			
+			}
+		onchangeN = (e)=>{	this.setState({name:e.currentTarget.value});}; 
+		onchangeG =	(e)=>{	if (e.currentTarget.value != this.state.gender){
+								this.setState({gender:e.currentTarget.value});
+							}; 
+		};
+		onchangeS =	(e)=>{	this.setState({speciality:e.currentTarget.value});
+		};
+		onchangeL = (e)=>{	let m = this.state.languages;
+							let k = m.indexOf(e.currentTarget.value);
+							if (k>=0) {m.splice(k,1);}
+							else {m.unshift(e.currentTarget.value);}
+							this.setState({languages:m});
+							console.log(this.state.languages);
+		};	
+		validate =	()=>{
+				return this.state.name != null && this.state.name.trim().length > 0;
+		};
+		render(){
+					const tmp01 = 	<label>
+										Фамилия, имя, отчество * 
+										<input name='name' type='text' onChange={this.onchangeN} placeholder='Фамилия И.О.'/>
+									</label>
+					const tmp02 = 	<label>Пол
+									<label> 
+										<input id='M' name ='gender' type='radio' onChange={this.onchangeG} value='М' checked = {this.state.gender == 'М'} /> M
+									</label>
+									<label> 
+										<input id='F' name ='gender' type='radio' onChange={this.onchangeG} value='Ж' checked ={this.state.gender == 'Ж'}  /> Ж
+									</label>
+									</label>;
+					const tmp03X = 	this.props.Languages.map((item, index) => {
+											return 	<label key={item}> 
+													<input name={item}  id ={item} onChange = {this.onchangeL} type = 'checkbox'  value ={item} />{item}
+													</label>;
+									});
+					const tmp03 = 	<span> Языки {tmp03X}</span>;
+					const tmp04X = 	this.props.Specialities.map((item, index)=>{return <option key={item} id={item} value={item}>{item}</option>});
+					const tmp04  =	<label > 
+							          Специальность <select  name = 'speciality'  onChange={this.onchangeS}>{tmp04X}</select>
+									</label>;
+					/* const tmp05 = <button name ='press' disabled={!this.validate()} value='ok' >Ввод</button>; */
+					const tmp05 = <button name ='press'  value='ok' >Ввод</button>;
+					const tmp06 = <button name ='press' value= 'cancel'>Отказаться</button>;
+					
+					return 	<form method = 'post' action={this.props.Action}>
+								<p>	{tmp01}	</p>
+								<p>	{tmp02}	</p>
+								<p>	{tmp03}	</p>
+								<p>	{tmp04}	</p>
+								<p>	
+									{this.validate()&&tmp05}
+									{tmp06}
+								</p>
+							</form>;	
+		}
+	}
+	ReactDOM.render(
+			<InStudentsForm  Languages={['EN', 'FR', 'DE', 'SP']}  Specialities = {['ИСиТ','ПОИТ','ПОИБМС','ДЭВИ']} Action={null} />,   
+			document.getElementById('root')
+	);
+	
+	</script>
+	</body>
+	</html>
+

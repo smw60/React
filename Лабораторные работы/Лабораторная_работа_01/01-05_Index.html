@@ -67,8 +67,7 @@
 							let tmp = props.data.map((item, index)=>{return <option key={item} value={item}>{item}</option>});
 							return <select className='InSpeciality'  onChange={onSpecChange} defaultValue={props.data[0]}  >{tmp}</select>;
 	};
-	  //checkLang = (e)=>{ console.log(e);  return false;};
-	  // defaultChecked = {this.checkLang}
+	 
        ReactDOM.render(
 	    <div>
         <h2>Студент</h2>
@@ -79,6 +78,8 @@
  		</div>,
         document.getElementById('root')
       );
+	  
+	  
     </script>
 
   </body>

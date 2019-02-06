@@ -6,6 +6,7 @@
     <script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
     <script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
     <script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	<script src="file:///D:/beginReactJSC1/React/ReactFramework/prop-types.js"></script>
 	<link rel="stylesheet" href="01_css.css" />
   </head>
   <body>
@@ -80,11 +81,20 @@
 			  </div>
 	};
 	
-	   ReactDOM.render(
-	     <InStudent  Languages={['EN', 'FR', 'DE', 'SP']} Speciality = {['ИСиТ','ПОИТ','ПОИБМС','ДЭВИ']}  />, 
-        document.getElementById('root')
-      );
+	InGender.propTypes = {name:PropTypes.string.isRequired};  
+	
+	InLanguages.propTypes = {data: PropTypes.array.isRequired}; 
+	InSpeciality.propTypes = {data: PropTypes.array.isRequired};  
+	InStudent.propTypes = {Languages: PropTypes.array.isRequired, Speciality:PropTypes.array.isRequired}; 
+	
+	
+	ReactDOM.render(
+		<InStudent  Languages={['EN', 'FR', 'DE', 'SP']} Speciality = {['ИСиТ','ПОИТ','ПОИБМС','ДЭВИ']}  />, 
+		document.getElementById('root')
+	);
 	  
+	  
+	 // InSpeciality.propTypes = {data: PropTypes.array.isRequired, name:PropTypes.string.isRequired};  
 	  
 	  
 	  

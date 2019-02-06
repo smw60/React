@@ -6,6 +6,7 @@
     <script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
     <script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
     <script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	<script src="file:///D:/beginReactJSC1/React/ReactFramework/prop-types.js"></script>
 	<link rel="stylesheet" href="01_css.css" />
   </head>
   <body>
@@ -22,25 +23,7 @@
 										<input type='text' onChange={onchange} />
 	                              </div>;	
        };
-	class InGender extends React.Component {
-			state = {gender:'М'};
-		    onchange = (e)=>{
-						      if (e.currentTarget.value == this.state.gender) {}
-							  else {this.setState({gender:e.currentTarget.value}, ()=>{ console.log('gender', this.state.gender);})}; 
-							  // console.log('gender', this.state.gender);					  
-							  
-		    }; 
-		    render(){
-			            return  <div>
-						  	  	<label> 
-								    <input id='M' type='radio' onChange={this.onchange} value='М' checked = {this.state.gender == 'М'}/> M
-								</label>
-								<label> 
-								    <input id='F' type='radio' onChange={this.onchange} value='Ж' checked ={this.state.gender == 'Ж'} /> Ж
-								</label>
-	                            </div>;
-			};								   
-    };
+	
 					
 	class InLanguages extends React.Component {
 		state = {languages:[]};
@@ -69,22 +52,59 @@
 							          Специальность <select   onChange={onSpecChange} defaultValue={props.data[0]}  >{tmp}</select>
 								   </label>
 	};
+	class InGender extends React.Component {
+			state = {gender:'М'};
+		    onchange = (e)=>{
+						      if (e.currentTarget.value == this.state.gender) {}
+							  else {this.setState({gender:e.currentTarget.value}, ()=>{ console.log('gender', this.state.gender);})}; 
+							  // console.log('gender', this.state.gender);					  
+							  
+		    }; 
+		    render(){  
+			            this.props.getGender(this.state.gender);
+			            return  <div>
+						  	  	<label> 
+								    <input id='M' type='radio' onChange={this.onchange} value='М' checked = {this.state.gender == 'М'}/> M
+								</label>
+								<label> 
+								    <input id='F' type='radio' onChange={this.onchange} value='Ж' checked ={this.state.gender == 'Ж'} /> Ж
+								</label>
+	                            </div>;
+			};								   
+    };
+	InGender.propTypes  = {getGender: PropTypes.func.isRequired};
 	
 	const InStudent = (props)=>{
+		const getGender = (gender)=>{console.log('InStudent-getGender', gender);        };
 	    return <div>
 				<h2>Студент</h2>
 				<InName />
-				<InGender />
+				<InGender getGender ={getGender}  />
 				<InLanguages   data= {props.Languages}  />
 				<InSpeciality  data ={props.Speciality} />
 			  </div>
 	};
 	
-	   ReactDOM.render(
-	     <InStudent  Languages={['EN', 'FR', 'DE', 'SP']} Speciality = {['ИСиТ','ПОИТ','ПОИБМС','ДЭВИ']}  />, 
-        document.getElementById('root')
-      );
+	
+	
+	
+	
+	
+	
+	
+		
+	InLanguages.propTypes = {data: PropTypes.array.isRequired}; 
+	InSpeciality.propTypes = {data: PropTypes.array.isRequired};  
+	InStudent.propTypes = {Languages: PropTypes.array.isRequired, Speciality:PropTypes.array.isRequired}; 
+	
+	
+	ReactDOM.render(
+		<InStudent  Languages={['EN', 'FR', 'DE', 'SP']} Speciality = {['ИСиТ','ПОИТ','ПОИБМС','ДЭВИ']}  />, 
+		document.getElementById('root')
+	);
 	  
+	  
+	 // InSpeciality.propTypes = {data: PropTypes.array.isRequired, name:PropTypes.string.isRequired};  
 	  
 	  
 	  
