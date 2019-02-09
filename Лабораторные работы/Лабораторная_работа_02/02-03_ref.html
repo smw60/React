@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>РДWП-Лабораторная 01</title>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	<script src="file:///D:/beginReactJSC1/React/ReactFramework/prop-types.js"></script>
+	<link rel="stylesheet" href="01_css.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    
+	 <script type="text/babel">
+		
+
+	
+	class Ingender extends React.Component {
+		state = {gender:'М'};
+		value = 'М';
+		ongender = (e)=>{
+				this.setState({gender:e.currentTarget.value}); 
+		};
+		render(){	
+					this.value = this.state.gender;
+					const  	tmp01	=	<span>
+											<label> 
+												<input id='M'  name = 'xxM' onChange={this.ongender} type='radio'  value='М' checked = {this.state.gender == 'М'} /> M
+											</label>
+											<label> 
+												<input id='F'  name = 'xxF' onChange={this.ongender} type='radio'  value='Ж' checked = {this.state.gender == 'Ж'}/> Ж
+											</label>
+										</span>;
+					return 	tmp01;
+			};
+	};
+	
+	class Inlanguages extends React.Component {
+		state = {languages:[]};
+		value = [];
+		onchange = (e)=>{console.log(e.currentTarget.value); 
+		                            let m = this.state.languages;
+									let k = m.indexOf(e.currentTarget.value);
+									if (k>=0) {m.splice(k,1);}
+									else {m.unshift(e.currentTarget.value);}
+									this.setState({languages:m});
+									console.log(this.state.languages);
+		};
+		render(){
+			this.value = this.state.languages;
+			let tmp = this.props.data.map((item, index) => {
+						return 	<label key={item}> 
+								   <input key={item} id ={item}  onChange = {this.onchange} type = 'checkbox'  value ={item} />{item}
+								</label>;
+			});
+			return tmp;
+		}
+	}
+	class  Inspeciality extends React.Component {
+			state = {speciality: this.props.data[0]};
+			onspecchange =(e)=>{ this.setState({speciality:e.currentTarget.value});};
+			value =	this.props.data[0] ;
+			render(){
+				this.value = this.state.speciality;
+				let tmp = this.props.data.map((item, index)=>{return <option key={item} value={item}>{item}</option>});
+				return <label > 
+							Специальность <select   onChange={this.onspecchange} defaultValue={this.props.data[0]}  >{tmp}</select>
+					   </label>
+			};
+	};
+	
+	
+	
+	class In extends React.Component {
+		itxt = 	React.createRef();
+		igender = React.createRef();
+		ilanguages = React.createRef();
+		ispeciality = React.createRef();
+		onclick = ()=>{
+						console.log('itxt:', this.itxt.current.value);
+						console.log('igender:', this.igender.current.value);
+						console.log('ilanguages:', this.ilanguages.current.value);
+						console.log('ispecialities:', this.ispeciality.current.value);
+		};
+		ongender =(e)=>{
+		}	
+		render(){
+				const 	tmp01	= 	<input type='text' ref={this.itxt} />
+				const  	tmp02	=	<Ingender          ref={this.igender} />
+				const  	tmp03	=	<Inlanguages     data={this.props.Languages}       ref={this.ilanguages} />
+				const  	tmp04	=	<Inspeciality    data={this.props.Specialities}    ref={this.ispeciality} />
+				return 		<div> 
+							<p>{tmp01}</p>
+							<p>{tmp02}</p>
+							<p>{tmp03}</p>
+							<p>{tmp04}</p>
+							<button onClick={this.onclick}>In</button>
+							</div> 
+		};
+	
+	}
+	
+	ReactDOM.render(
+		<div> 
+			<In Languages={['EN', 'FR', 'DE', 'SP']} Specialities = {['ИСиТ','ПОИТ','ПОИБМС','ДЭВИ']}  />
+		</div>, 
+		document.getElementById('root')
+	);
+	
+	
+	/*		<A  ref = {refA}  />
+			<B  ref = {refB}  />
+			<Ingender />
+			
+	*/  
+    </script>
+
+  </body>
+</html>
+

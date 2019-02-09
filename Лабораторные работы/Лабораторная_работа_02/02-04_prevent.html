@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>РДWП-Лабораторная 02-04</title>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	<script src="file:///D:/beginReactJSC1/React/ReactFramework/prop-types.js"></script>
+	<link rel="stylesheet" href="01_css.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    
+	 <script type="text/babel">
+	
+	
+	
+	class F extends React.Component {
+		state = {in1:null, in2:null, in3:null};
+		in1 = 	React.createRef();
+		in2 =   React.createRef();
+		in3 =   React.createRef();
+		onclick = (e)=>{
+						this.setState({in1:this.in1.current.value, in2:this.in2.current.value, in3:this.in3.current.value});
+						console.log(e.currentTarget.value);
+						e.preventDefault();
+		};
+		render(){
+				console.log(this.state);
+				return 	<form method='post' action=''> 
+							<p><input id = 'in1' name = 'in1' type='text' ref={this.in1} /></p>
+							<p><input id = 'in2' name = 'in2' type='text' ref={this.in2} /></p>
+							<p><input id = 'in3' name = 'in3' type='text' ref={this.in3} /></p>
+							<p><button onClick={this.onclick} value = 'XOK'>OK</button> </p>
+						</form> 
+		};
+	};
+	
+	ReactDOM.render(
+		<F />, 
+		document.getElementById('root')
+	);
+	
+	
+    </script>
+
+  </body>
+</html>
+

@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>РДWП-Лабораторная 02-05</title>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	<script src="file:///D:/beginReactJSC1/React/ReactFramework/prop-types.js"></script>
+	<link rel="stylesheet" href="01_css.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    
+	 <script type="text/babel">
+	
+	class F extends React.Component {
+		
+		onclick1 = (e)=>{ console.log('1'); };
+		onclick2 = (e)=>{ console.log('2'); };
+		onclick3 = (e)=>{ console.log('3'); e.stopPropagation();};
+		onclick4 = (e)=>{ console.log('4'); };
+		onclick5 = (e)=>{ console.log('5'); };
+		render(){
+				return 	<div onClick={this.onclick5}> 
+							<div onClick={this.onclick4}>
+								<div onClick={this.onclick3}> 
+									<div onClick={this.onclick2}> 
+										<button onClick={this.onclick1} value = 'XOK' >OK</button> 
+									</div>
+								</div>
+							</div> 
+						</div>
+		};
+	};
+	
+	ReactDOM.render(
+		<F />, 
+		document.getElementById('root')
+	);
+	
+	
+    </script>
+
+  </body>
+</html>
+

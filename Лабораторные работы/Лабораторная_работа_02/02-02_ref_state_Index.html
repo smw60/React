@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>РДWП-Лабораторная 01</title>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
+    <script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	<script src="file:///D:/beginReactJSC1/React/ReactFramework/prop-types.js"></script>
+	<link rel="stylesheet" href="01_css.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    
+	 <script type="text/babel">
+	
+	var refA = React.createRef();
+	var refB = React.createRef();	
+	
+	class A extends React.Component {
+		state = {a:'A'};
+		onclick = ()=>{
+						let x =  refB.current.state.b + 'A';
+						refB.current.setState({b:x});
+		};
+		render(){
+								
+				return 		<div> 
+							<h1> class {this.state.a} </h1>
+							<button onClick={this.onclick}>A</button>
+							</div>;
+		};
+	}
+	
+	class B extends React.Component {
+		state = {b:'B', stateA:refA.current};
+		onclick = ()=>{
+						let x =  refA.current.state.a + 'B';
+						refA.current.setState({a:x});
+		};
+		render(){
+				
+				return 		<div> 
+							<h1> class {this.state.b} </h1>
+							<button onClick={this.onclick}>B</button>
+							</div> 
+		};
+	}
+	
+	
+	ReactDOM.render(
+		<div> 
+			<A  ref = {refA}  />
+			<B  ref = {refB}  />
+		</div>, 
+		document.getElementById('root')
+	);
+	
+	console.log('refA',refA.current.state.a);
+	console.log('refB',refB.current.state.b);
+	
+	
+	  
+    </script>
+
+  </body>
+</html>
+
