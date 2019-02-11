@@ -1,0 +1,51 @@
+﻿	
+	<!DOCTYPE html>
+	<html>
+	  <head>
+		<meta charset="UTF-8" />
+		<title>РДWП-Лабораторная 02</title>
+		<script src="file:///D:/beginReactJSC1/React/ReactFramework/react.development.js"></script>
+		<script src="file:///D:/beginReactJSC1/React/ReactFramework/react-dom.development.js"></script>
+		<script src="file:///D:/beginReactJSC1/React/ReactFramework/babel.min.js"></script>
+	  </head>
+	<body>
+	<div id="root"></div>
+		
+	<script type="text/babel">
+		
+	class InForm extends  React.Component {
+		constructor(props){
+				super(props);
+				this.state = {in1:null,  in2:null, press:null};
+				this.in1 =  React.createRef();
+				this.in2 =  React.createRef();
+				this.f = React.createRef();
+		}
+		onsubmit = (e)=>{
+					e.preventDefault();
+					this.setState({in1:this.in1.current.value,in2:this.in2.current.value}, ()=>{console.log(this.f);} );
+		}
+		onclick = (e)=>{this.setState({press: e.currentTarget.value});};
+		render(){
+				console.log(this.state);
+				return 	<form onSubmit={this.onsubmit}  ref={this.f} >
+						<input id='in1' type='text' 	ref={this.in1} />
+						<input id='in2' type='text' 	ref={this.in2} />
+						<input name='Press' id='OK'		type='submit'  onClick = {this.onclick} value = 'OK' />
+						<input name='Press' id='Cancel' type='submit'  onClick = {this.onclick}	value = 'Cansel' />
+						</form>;
+		}
+	};
+
+	ReactDOM.render(
+			<InForm />,   
+			document.getElementById('root')
+	);
+	
+		/*	<button>OK</button>
+			<button>Cancel</button>		*/
+	
+	</script>
+	</body>
+	</html>
+
