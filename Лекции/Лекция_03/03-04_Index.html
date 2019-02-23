@@ -1,0 +1,250 @@
+		
+	<!DOCTYPE html>
+	<html>
+		  <head>
+			<meta charset="UTF-8" />
+			<title>REACT in BSTU </title>
+			
+			<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+			<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+			<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+		   <style>
+		     :root {
+					--height_panel: 750px;
+					--width_left_panel: 20%;
+					--width_right_panel: 79.5%;
+					--min_width_body: 1100px;
+                    }
+             body  { min-width: var(--min_width_body); }
+			.Navigation {
+						 box-sizing: border-box;
+						 border: 2px solid #000000;
+						 padding: 0.1%;
+						 background-color: #cecccc;
+				       }
+			.Navigation .activebutton  { margin: 1%; border: 2px solid #000000; background-color: #cecccc;}
+			.Navigation .passivebutton { margin: 1%; border: 2px solid #cecccc; background-color: #cecccc;}
+			
+			.Panel     {
+						 box-sizing: border-box;
+						 border: 2px solid #000000;
+						 padding: 0.1%;
+						}
+		   .Students, .Companies  {
+						 width: var(--width_left_panel);
+						 height: var(--height_panel);
+						 margin-top: 0.5%;
+						 box-sizing: border-box;
+						 border: 2px solid #000000;
+						 background-color: #e8e4e4;
+						 padding: 0.1%;
+						 float: left;
+						 overflow-y: scroll;
+   					  }
+
+		  .Students .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
+		  .Students .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
+		 
+		  .Student_Events, .Company_Events {
+						  box-sizing: border-box;
+						  border: 2px solid #000000;
+						  display: inline-block;
+						  width: var(--width_right_panel);
+						  height: var(--height_panel);
+						  margin-left: 0.5%;
+						  margin-top: 0.5%;
+						  float: none;
+						  padding: 0.5%;
+						  overflow-y: scroll;
+						  overflow-x: scroll;
+						}
+		  .Student_Events .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
+		  .Student_Events .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
+			
+		  .Events, .Contacts  {
+						  box-sizing: border-box;
+						  border: 2px solid #000000;
+						  /* display: inline-block;          */
+						  /* width: var(--width_right_panel); */
+						  height: var(--height_panel);
+						  margin-left: 0.5%;
+						  margin-top: 0.5%;
+						  float: none;
+						  padding: 0.5%;
+						  overflow-y: scroll;
+						  overflow-x: scroll;
+					  }
+			
+		  </style>
+		  </head>
+		<body>
+			
+			<div id="root"></div>
+			<script type="text/babel">
+			const Data_Students = [   // отладка 
+						{id:1,	name:'Петров П.П.', 	 spec:'ИСиТ', 	 group:1,	syear:2016}, 
+						{id:2,	name:'Иванов И.И.',		 spec:'ИСиТ',    group:1,	syear:2016}, 
+						{id:3,	name:'Сидоров С.С.',	 spec:'ПОИТ',    group:4,	syear:2016},
+						{id:4,	name:'Кириллов К.К.',	 spec:'ПОИТ',    group:5,	syear:2016},
+						{id:5,	name:'Алексеев А.А.',	 spec:'ДЭВИ',    group:9,	syear:2016},
+						{id:6,	name:'Сергеев С.С.',     spec:'ПОИБМС',  group:7,	syear:2017},
+						{id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+								  ];
+             const Data_Events  = [   // отладка 
+						{id:1,   date:'2019-01-07', text:'Собеседование',
+						company:{id:1,  name: 'iTechArt'}, student:{id:2,	name:'Иванов И.И.',		 spec:'ИСиТ',    group:1,	syear:2016}
+						}, 
+						{id:2,  date:'2018-09-12', text:'Стажировка',
+						company:{id:1,  name: 'iTechArt'}, student:{id:1,	name:'Петров П.П.', 	 spec:'ИСиТ', 	 group:1,	syear:2016}
+						},
+						{id:3,  date:'2018-02-07', text:'Принят на работу',
+						company:{id:2,  name: 'LeverX'}, student:{id:2,  name: 'LeverX'}
+						},
+						{id:4,  date:'2018-04-22', text:'Собеседование не прошел, плохой англ',
+						company: {id:2,  name: 'LeverX'},    student: {id:4,	name:'Кириллов К.К.',	 spec:'ПОИТ',    group:5,	syear:2016}
+						},
+						{id:5,  date:'2018-07-12', text:'Пошел на лаб',
+						company: {id:3,  name: 'iSsoft'},    student:{id:5,	name:'Алексеев А.А.',	 spec:'ДЭВИ',    group:9,	syear:2016}
+						},
+						{id:6,  date:'2018-06-14', text:'Посещает курсы',
+						company:{id:4,  name: 'EPAM'},  student:{id:2,	name:'Иванов И.И.',	spec:'ИСиТ',    group:1,	syear:2016}
+						},
+						{id:7,  date:'2018-04-15', text:'Работает полный день',
+						company:{id:4,  name: 'EPAM'},   student:{id:6,	name:'Сергеев С.С.',     spec:'ПОИБМС',  group:7,	syear:2017}
+						},
+						{id:8,  date:'2017-02-25', text:'Хакатон 1 место',
+						company: null,   student: {id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+						},
+						{id:9,  date:'2017-11-30', text:'Собеседование',
+						company:{id:5,  name: 'IBA'},  student: {id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+						},
+						{id:10, date:'2017-11-30', text:'Собеседование',
+						company: {id:2,  name: 'LeverX'}, student: {id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
+						}
+								  ];
+			const Data_Company  = [   // отладка 
+						{id:1,  name: 'iTechArt'}, 
+						{id:2,  name: 'LeverX'},
+						{id:3,  name: 'iSsoft'},
+						{id:4,  name: 'EPAM'},
+						{id:5,  name: 'IBA'},
+						{id:6,  name: 'Wargaing'},
+								  ];
+								  
+			</script>
+			 <script type="text/babel">
+          			
+			
+			class A extends React.Component {
+				constructor(props) {
+					super(props);
+					this.state = {gen_events:[], get_events:[]};
+					this.eventA = new window.Event('eventA');
+					window.addEventListener('eventC',  (e)=> {
+								let m = this.state.get_events;
+								m.unshift('C');
+								this.setState({get_events:m});
+					}, false);	
+				}	
+				obc = (e)=>{ 
+							let m = this.state.gen_events;
+							m.unshift('A');
+							this.setState({gen_events:m});
+							window.dispatchEvent(this.eventA);
+				}		
+				render(){			
+							let tmp1 = this.state.gen_events.map((item, index)=><span key = {index}> {item}</span>);
+							let tmp2 = this.state.get_events.map((item, index)=><span key = {index}> {item}</span>);
+							return 	<div>
+										<button onClick={this.obc}>A subscr C</button>
+										{tmp1}
+										<div>{tmp2}</div>
+									</div>
+				};  
+			};
+			
+			
+			class B extends React.Component {
+				constructor(props) {
+					super(props);
+					this.state = {gen_events:[], get_events:[]};
+					this.eventB = new window.Event('eventB');
+					window.addEventListener('eventA',  (e)=> {
+								let m = this.state.get_events;
+								m.unshift('A');
+								this.setState({get_events:m});
+					}, false);	
+					window.addEventListener('eventC',  (e)=> {
+								let m = this.state.get_events;
+								m.unshift('C');
+								this.setState({get_events:m});
+					}, false);	
+				}			
+				obc = (e)=>{ 
+						let m = this.state.gen_events;
+						m.unshift('B');
+						this.setState({gen_events:m});
+						window.dispatchEvent(this.eventB);						
+				}		
+				render(){			
+							let tmp1 = this.state.gen_events.map((item, index)=><span key = {index}> {item}</span>);
+							let tmp2 = this.state.get_events.map((item, index)=><span key = {index}> {item}</span>);
+							return 	<div>
+										<button onClick={this.obc}>B subscr A,C</button>
+										{tmp1}
+										<div>{tmp2}</div>
+									</div>
+				};  
+			};
+			
+			
+			
+			class C extends React.Component {
+				constructor(props) {
+					super(props);
+					this.state = {gen_events:[], get_events:[]};
+					this.eventC = new window.Event('eventC');
+					window.addEventListener('eventB',  (e)=> {
+								let m = this.state.get_events;
+								m.unshift('B');
+								this.setState({get_events:m});
+					}, false);	
+				}	
+				obc = (e)=>{ 
+							let m = this.state.gen_events;
+							m.unshift('C');
+							this.setState({gen_events:m});
+							window.dispatchEvent(this.eventC);
+				}		
+				render(){			
+							let tmp1 = this.state.gen_events.map((item, index)=><span key = {index}> {item}</span>);
+							let tmp2 = this.state.get_events.map((item, index)=><span key = {index}> {item}</span>);
+							return 	<div>
+										<button onClick={this.obc}>C subscr B</button>
+										{tmp1}
+										<div>{tmp2}</div>
+									</div>
+				};  
+			};
+					
+			
+				
+				class App extends React.Component {
+				      render(){
+							return (
+								   <div> 
+									<A/><br/>
+									<B/><br/>
+									<C/>
+								  </div>
+								  );
+					   }
+				};						 					 
+                ReactDOM.render(<App/>, document.getElementById('root') );
+			 
+			 </script>
+
+		</body>
+	</html>
+	
+	

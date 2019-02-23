@@ -1,0 +1,63 @@
+		
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="UTF-8" />
+			<title>REACT in BSTU </title>
+			
+			<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+			<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+			<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+		</head>
+		<body>
+		
+		<div id="root"></div>
+		
+		<script type="text/babel">
+          	
+			class A extends React.Component{
+			        constructor(props) {             // начальная инициализация компонента
+						super(props);
+						this.txt = 'constructor';	
+						console.log(this.txt);
+					};
+					componentWillMount(){            // вызывается непосредственно перед рендерингом компонента
+						this.txt += ' cWM';
+						console.log(this.txt);
+					};
+					render(){                        // рендеринг компонента
+						this.txt += ' render';
+						console.log(this.txt);
+ 					    return <h3> Компонент A: {this.txt} </h3> 
+					};
+					componentDidMount(){			 // вызывается после рендеринга компонента  
+						this.txt += ' cDM';          // здесь можно выполнять запросы к удаленным ресурсам
+						console.log(this.txt);
+					};
+					componentWillUnmount(){          // вызывается перед удалением компонента из DOM
+						this.txt += ' cWU';
+						console.log(this.txt);
+					};	
+			};
+			
+			
+			
+			
+				
+				
+				
+				
+			class App extends React.Component {
+					render(){
+							return <div> <B />  </div>
+					};
+			};						 					 
+            
+			ReactDOM.render(<App />, document.getElementById('root') );
+			
+		</script>
+
+		</body>
+	</html>
+	
+	

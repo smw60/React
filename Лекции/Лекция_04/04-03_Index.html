@@ -1,0 +1,94 @@
+		
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="UTF-8" />
+			<title>REACT in BSTU </title>
+			
+			<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+			<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+			<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+		</head>
+		<body>
+		
+		<div id="root"></div>
+		
+		<script type="text/babel">
+          	
+			class B extends React.Component{
+			        constructor(props) {             // начальная инициализация компонента
+						super(props);
+						this.state = {b:0};
+						this.print('B:constructor');
+					};
+					print(txt){
+						console.log(txt + ' b = ', this.state.b);
+					}
+					obc = (e)=>{
+						this.setState({b: ++this.state.b});
+					}
+					
+					componentWillMount(){            // вызывается непосредственно перед рендерингом компонента
+						//this.print('cWMo');
+					};
+					render(){                        // рендеринг компонента
+						this.print('B:render');
+						return 	<div>
+									<h3> Компонент B: state = {this.state.b} </h3>
+									<button onClick={this.obc} >B</button>
+								</div>
+					};
+					shouldComponentUpdate(nextProps, nextState){
+						//	this.print('sCUpd');
+						console.log('B:sCUpd:props', this.props);
+						console.log('B:sCUpd:nextProps',nextProps);
+						return true;
+					};
+					componentWillUpdate(nextProps, nextState){
+						//	this.print('cWUpd');
+							return true;
+					};
+					componentDidMount(){			 // вызывается после рендеринга компонента  
+						// this.print('cDMo');          // здесь можно выполнять запросы к удаленным ресурсам
+					};
+					componentDidUpdate(prevProps, prevState){   // вызывается сразу после обновления компонента, если  cWUp = true
+						//this.print('cDUpd');
+						console.log('B:cDUpd:props', this.props);
+						console.log('B:cDUpd:prevProps',prevProps);
+						return true;
+					};
+					componentWillUnmount(){          // вызывается перед удалением компонента из DOM
+						//this.print('cWUnm');
+					};	
+			};  	
+			
+			class A extends React.Component{
+			        constructor(props) {             // начальная инициализация компонента
+						super(props);
+						this.state = {a:0};
+					};
+					obc = (e)=>{
+						this.setState({a: ++this.state.a});
+					}
+					render(){                        // рендеринг компонента
+ 					    return 	<div>
+								<h3> Компонент A: state={this.state.a}</h3>
+								<button onClick={this.obc} >A</button>
+								<B parm1= {this.state.a} />
+								</div>
+					};
+			};			
+			class App extends React.Component {
+					render(){
+							return <div> <A />  </div>
+					};
+			};						 					 
+            
+			ReactDOM.render(<App />, document.getElementById('root') );
+			
+		</script>
+
+		</body>
+	</html>
+	
+	

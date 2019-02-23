@@ -1,4 +1,4 @@
-﻿		
+		
 	<!DOCTYPE html>
 	<html>
 		  <head>
@@ -11,8 +11,8 @@
 		   <style>
 		     :root {
 					--height_panel: 750px;
-					--width_left_panel: 25%;
-					--width_right_panel: 74.5%;
+					--width_left_panel: 20%;
+					--width_right_panel: 79.5%;
 					--min_width_body: 1100px;
                     }
              body  { min-width: var(--min_width_body); }
@@ -41,18 +41,9 @@
 						 float: left;
 						 overflow-y: scroll;
    					  }
-		  .Students	.operations { display:inline-block; margin:3px; box-sizing: border-box; border: 1px solid #000000;  background-color: #e8e4e4; padding: 1px;}
-		  .Students .addstudent    {display:block;  margin: 3px; padding: 0.5%; border: 2px solid #000000;} 
-		  .Students .addstudent input {width: 98%;}
-		  
+
 		  .Students .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
 		  .Students .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
-          
-		  /*.Students .addstudent button {} */
-		  
-		  .Companies .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
-		  .Companies .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}	
- 		  
 		 
 		  .Student_Events, .Company_Events {
 						  box-sizing: border-box;
@@ -69,8 +60,6 @@
 						}
 		  .Student_Events .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
 		  .Student_Events .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}
-		  .Company_Events .activebutton  {display:block; margin: 5% 1%; border: 2px solid #000000; }
-		  .Company_Events .passivebutton {display:block; margin: 5% 1%; border: 2px solid #ffffff; background-color:#e8e4e4;}	
 			
 		  .Events, .Contacts  {
 						  box-sizing: border-box;
@@ -133,8 +122,6 @@
 						company: {id:2,  name: 'LeverX'}, student: {id:7,	name:'Александров А.А.', spec:'ПОИБМС',  group:7,	syear:2017}
 						}
 								  ];
-								  
-								  
 			const Data_Company  = [   // отладка 
 						{id:1,  name: 'iTechArt'}, 
 						{id:2,  name: 'LeverX'},
@@ -143,8 +130,6 @@
 						{id:5,  name: 'IBA'},
 						{id:6,  name: 'Wargaing'},
 								  ];
-								  
-			const Data_Speciality = [{name:'ИСиТ'}, {name:'ПОИТ'}, {name:'ПОИБМС'}];
 								  
 			</script>
 			 <script type="text/babel">
@@ -171,115 +156,57 @@
 												 </nav>
 			   }; 
 	           
-			 const SpecList = (props)=>{
-					        let onChange =(e)=>{props.getVal(e.currentTarget.value);};
-					        let tmp = props.data.map((item, index)=>{return <option key={item.name} value={item.name}>{item.name}</option>});
-							return <select onChange={ onChange} >{tmp}</select>;
-              };					  
+				class Students extends React.Component {
+					state = {students:this.props.data};
+				    obc = (e)=>{this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));}		
+					render(){				  
+							let tmp = null;
+							if (Array.isArray(this.state.students)){
+								tmp = this.state.students.map((item, index)=><button key = {item.id} id = {item.id}  onClick={this.obc} className='passivebutton'> 
+																				{item.id} {item.name}
+																			</button>);
+							}
+							return <div className='Students'>
+										<div className='students_list'> {tmp}</div>
+									 </div>;
+					}   
+			   };
+			   
+				class Student_Events extends React.Component {
+					constructor(props) {
+						super(props);
+					}
+					render(){;
+						let h3 = null; 
+						if (this.props.currstudent != null) {
+						   const {name, spec, syear, group} = this.props.currstudent;
+						   h3 = <h3>   {name}, {spec}-{syear}-{group} <hr/></h3>; 
+						}
+						return  <div className='Student_Events'> {h3}</div>;
+					}
+				};
 				
-			  class AddStudent extends React.Component{
-			         constructor(props) {
-							super(props);
-							this.iname = React.createRef();
-						    this.ispec = props.dataspec[0].name;
-							this.iyear = React.createRef();
-							this.igroup = React.createRef();
-					 }
-					 getVal = (val)=>{ this.ispec = val;    console.log('AddStudent', val);  };
-				     obc = (e)=>{this.props.addadd(this.iname.current.value, this.ispec, this.iyear.current.value, this.igroup.current.value);};										 			
-					 render(){
- 					      return   <table className ="addstudent" >
-								   <thead> 
-								    <tr><th colSpan="2">Новый студент</th></tr>   
-								   </thead>
-								   <tbody>
-                                    <tr><td>Имя</td><td><input type="text" ref={this.iname} /></td></tr> 
-								    <tr><td>Специальность</td><td><SpecList   getVal={this.getVal} data={this.props.dataspec}  /></td></tr>
-								    <tr><td>Год поступления</td><td><input type="number" ref={this.iyear}/></td></tr>
-								    <tr><td>Группа</td><td><input type="number" ref={this.igroup} /></td></tr>
-								    <tr><th colSpan="2"><button  onClick={this.obc}>Добавить</button><button onClick={this.props.addcancel}>Отказаться</button></th></tr>
-								   </tbody>
-							       </table>;
-					 }
-			   } 
-			  //  <tr><td>Специальность</td><td><input type="text" ref={this.ispec}  /></td></tr>
-			   
-			   class Students extends React.Component {
-			       state = {students:this.props.data, flagadd:false};
-			       obc = (e)=>{ 
-										 [...document.querySelectorAll(".Students .activebutton")].map((e)=>{e.className = 'passivebutton'});
-										 document.getElementById(e.target.id).className = 'activebutton';
-										 this.props.currstudent( this.state.students.find((em)=> em.id == e.target.id));
-				  };
-				  addobc     = (e)=>{this.setState({flagadd:true})};
-				  addcancel  = (e)=>{this.setState({flagadd:false})};
-				  addadd     = (name, spec, year, group)=>{
-				                      this.setState({flagadd:false}); console.log('Students', name + ' ' + spec + ' ' + year + ' '+ group);
-									  let newstudent =  {id:Date.now()%(10*365*24*60*60*1000),	name: name,	 spec:spec,    group:group,	syear:year}
-									  this.state.students.unshift(newstudent); 
-				  };
-				  render(){
-				       let flag = this.props.currstudent()!=null;
-					   let mnu =  <div className ="operations" >  
-					              {!this.state.flagadd&&<button id="addstudent" onClick={this.addobc} title="добавить нового студента"><img src="images/icons8-плюс-30.png" alt="добавить нового студента"/></button>} 
-								  {!this.state.flagadd&&flag&&<button id="remstudent"  title="удалить студента"><img src="images/icons8-минус-30.png" alt="удалить студента" /></button>}
-								  {!this.state.flagadd&&flag&&<button id="updstudent"  title="изменить студента"><img src="images/icons8-available-updates-30.png" alt="изменить студента" /></button>}
-								  {!this.state.flagadd&&flag&&<button id="posstudent"  title="позиционировать"> <img src="images/icons8-легко-найти-30.png" alt="позиционировать" /></button>}
-								  </div>								  
-				       let tmp = null;
-					  
-					   if (Array.isArray(this.state.students)){
-						   tmp = this.state.students.map((item, index)=><button key = {item.id} id = {item.id}  onClick={this.obc} className='passivebutton'> 
-						                                         {item.id} {item.name}</button>);
-					  }
-					  let addstudent = <AddStudent addadd = {this.addadd}  addcancel= {this.addcancel} dataspec={this.props.dataspec} />;
-					  return <div className='Students'>{mnu}{this.state.flagadd&&addstudent}{tmp}</div>;
-				   }   
-			   }
-			   
-			  			   
-			   const Student_Events  = (props) => {console.log(props.currstudent);
-			                                   let tmp = null;
-											   let h3 = null; 
-											   if (props.currstudent != null && Array.isArray(props.data)){
-											       const {name, spec, syear, group} = props.currstudent;
-											       h3 = <h3>   {name}, {spec}-{syear}-{group} </h3>; 
-											       tmp = props.data.map((item, index)=>{
-													   if (item.student.id == props.currstudent.id)
-													   {
-													   	  return  <button key = {item.id} id = {item.id}  className='passivebutton'> 
-																		  {item.id} {item.date} {item.company!=null?item.company.name:null} {item.text}</button>;
-													   }
-													});
-											   }
-											   return  <div className='Student_Events'> {h3}{tmp}</div>;
-			   };						 
-			   const Companies       = () => {return  <div className='Companies'><p> Companies</p></div>};
-			   const Company_Events  = () => {return  <div className='Company_Events'><p> Company_Events</p></div>};		
-               const Events          = () => {return  <div className='Events'><p> Events</p></div>};
-			   const Contacts        = () => {return  <div className='Contacts'> <p>Contacts</p></div>};	
-
-			   			   
-			   class Panel  extends React.Component {
-				   state = {currStudent: null, currEvent_id:null};
-				   updCurrStudent  = (student) => {
- 				                                   if (student)
-												   {
-												      this.setState({currStudent: student})
-												   }; 
-											        return this.state.currStudent;
+				class Panel  extends React.Component {
+					state = {currStudent: null};
+					updCurrStudent  = (student) => {
+													if (student){
+														  this.setState({currStudent: student}, ()=>{
+																		[...document.querySelectorAll(".Students .activebutton")].map((e)=>{e.className = 'passivebutton'});
+																		document.getElementById(this.state.currStudent.id).className = 'activebutton';
+																		})			
+													}; 
 											     };
-      		       render(){
+				    render(){
 							return  <div className='Panel'>
-										{(this.props.Regim == REGIM.S)&&<Students data={Data_Students} dataspec={Data_Speciality} currstudent={this.updCurrStudent} />}
-										{(this.props.Regim == REGIM.S)&&<Student_Events data={Data_Events}  currstudent={this.state.currStudent} />}
-										{(this.props.Regim == REGIM.C)&&<Companies />}
-										{(this.props.Regim == REGIM.C)&&<Company_Events />}
-										{(this.props.Regim == REGIM.E)&&<Events />}
-										{(this.props.Regim == REGIM.R)&&<Contacts />}
+										{(this.props.Regim == REGIM.S)&&<Students data={Data_Students}        currstudent={this.updCurrStudent} />}
+										{(this.props.Regim == REGIM.S)&&<Student_Events  currstudent={this.state.currStudent} />}
 									</div>;
-				 }    
-			   }
+					}; 
+				};				
+			   
+			   
+			   
+			   
 				
 				class App extends React.Component {
 				       state = { Regim: REGIM.S}    // состояние 
